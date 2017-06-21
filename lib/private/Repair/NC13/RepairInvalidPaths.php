@@ -19,7 +19,7 @@
  *
  */
 
-namespace OC\Repair;
+namespace OC\Repair\NC13;
 
 
 use OCP\IDBConnection;
@@ -114,8 +114,11 @@ class RepairInvalidPaths implements IRepairStep {
 	}
 
 	public function run(IOutput $output) {
-		$count = $this->repair();
+		$versionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
+		if (version_compare($versionFromBeforeUpdate, '13.0.0.1', '<')) {
+			$count = $this->repair();
 
-		$output->info('Repaired ' . $count . ' paths');
+			$output->info('Repaired ' . $count . ' paths');
+		}
 	}
 }
